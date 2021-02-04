@@ -14,3 +14,53 @@ I. How to setup DHCP on PFSense
     10. Under Domain name, insert the name of the domain (in my case, JASON)
     11. Click the "Save" button at the bottom of the page
     12. Your DNS server should now work. Change your WKS's IP settings to get automatically from DHCP server instead of static, then ipconfig /all to confirm.
+II. How to setup SNMP on PFSense
+  A. Instructions
+    1. When on PFSense, navigate to Services->SNMP
+    2. Enable SNMP
+    3. Inset System Location (69 Howard), System Contact (Jason Quiroga), and change the Bind Interfaces to LAN.
+    4. Click Save
+    5. Restart the service on the top where the spiny arrow is
+III. How to disable SSH logins for the root account
+  A. Log in to server as root (sudo -i)
+  B. Type command "vi /etc/ssh/sshd_config"
+  C. Find the line where it says "PermitRootLogin yes" and change it to no
+  D. Underneath, add the line "AllowUsers [username]" in my case, "AllowUsers jason"
+  E. :wq
+  F. Restart the service with the command "service sshd restart"
+IV. How to allow a port throught the firewall
+  A. In Linux Console, type "firewall-cmd --permanent --add-port=[port]/[protocol" ie. "firewall-cmd --permanent --add-port=161/udp"
+  B. Reload firewall with "firewall-cmd --reload"
+  C. Check that the port is allowed through with "firewall-cmd --query-port=161/udp" and it should respond with "yes"
+V. How to install SNMP through the Windows GUI
+  A. In server manager, click on the top right where it says "Manage" and click "add roles and features"
+  B. Select the server that you want to install it on
+  C. Under "Features", select "SNMP Service" and under it "SNMP WMI Provider"
+  D. Confirm installation and let it install
+VI. How to start a Remote Powershell Session between two windows boxes
+  A. Go on powershell on the computer
+  B. Use the command "Enter-PSSession [computername]" in my case, "Enter-PSSession ad01-jason"
+  C. To exit the session, type "Exit-PSSession"
+VII. How to enable the "Computer Management" feature in mgmt01-jason
+  A. Start a remote powershell session with ad01-jason
+  B. Type the command { Set-NetFirewallRule -DisplayGroup "Remote Event Log Management" -Enabled True }
+  C. The command should go through and you should now be able to remotely manage AD01 from MGMT01
+VIII. How to enable SNMP Services on AD01
+  A. On MGMT01, on All Servers, go to ad01 and click "Computer Management"
+  B. Click on "Services and Applications", Then click on "Services"
+  C. Find SNMP Service in the services
+  D. Double click and go to Security Settings
+  E. Under accepted community names, add "SYS265" as "READONLY"
+  F. Under Accept SNMP Packets from these hosts, add "nmon01-jason"
+  G. Click Apply and OK
+  H. Restart the service by clicking "Restart the service" on the left
+IX. How to use SNMP Service
+  A. Use the command "snmpwalk -Os -c SYS265 -v2c ad01-jason"
+  B. To find out the line count, you can add "| wc -l" to the end of the command.
+  C. By adding "system" to the end, you can see the number of systems running on the computer
+X. How to listen to ports on a Linux machine
+  A. To listen to a port and display what was in the packets, type "sudo tcpdump -i ens192 port 161 -c10 -AAA" 
+    1. "ens192" is the name of the Connection you want to listen to
+    2. "161" is the port number which you want to listen to
+    3. "-c10" is how many packets you want to listen for (ie. -c24)
+    4. "-AAA" Means you're asking for the information in a humanely readable format.
