@@ -64,3 +64,46 @@ X. How to listen to ports on a Linux machine
     2. "161" is the port number which you want to listen to
     3. "-c10" is how many packets you want to listen for (ie. -c24)
     4. "-AAA" Means you're asking for the information in a humanely readable format.
+    
+    
+2/1/21
+
+I. How to Configure Firewall
+--> https://drive.google.com/file/d/1a-Kwc611NmL5LO5RuOpHpx0TWYslicZX/view
+
+--> PFSENSE:
+- Username: admin
+- Password: pfsense
+
+II. How to configure AD01 through commandline
+  A. Log on and enter a new password when prompted
+  B. Use the command "sconfig" and change the settings to the following:
+    1. IP: 10.0.5.5
+    2. Netmask: 255.255.255.0
+    3. Gateway: 10.0.5.2
+    4. Prefered DNS: 10.0.5.2
+    5. Computer name: ad01-jason
+    6. Manual Windows Update
+  C. Restart when prompted for computer name
+  D. Now, invoke powershell (using the command "powershell")
+  E. Install AD by typing "Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+  F. Install the Forest with the command "Install-ADDSForest -DomainName jason.local" and enter password when prompted
+  G. After installation is complete, if you type "whoami", it should return "jason/administrator"
+III. How to join a domain through powershell
+  A. Open up a command prompt with administrator privileges
+  B. Invoke powershell with "powershell" command
+  C. Type in the command " add-computer -domainname "jason" -restart " and then type in the username and password of a Domain Administrator (for me, this was a default
+  on the AD01 server, so the username was "Administrator" and the password was what I set it to when I configured it first).
+  D. Your workstation will restart after implementing the domain change and you should now be a part of the domain.
+  
+        
+HOW TO CONNECT TO THE CYBER.LOCAL SERVER:
+1. Login to Remote Student VDI
+2. Open Chrome
+3. Enter the link "https://vcenter01.cyber.local"
+4. Navigate to your systems
+
+SKIFF100-15.CYBER.LOCAL --> Skiff PC
+
+My Network Assignment:
+WAN/24: 10.0.17.107
