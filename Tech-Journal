@@ -1,3 +1,42 @@
+Grafana Notes
+
+I. How to install
+  A. Installation
+    1. Go on your nmon box and install grafana with the command "sudo yum install grafana -y"
+    2. Restart the daemon and start grafana while enabling it to start on startup with, "systemctl daemon-reload", "systemctl start grafana", "systemctl enable grafana".
+    3. Allow grafana through the firewall with "firewall-cmd --permanent --add-port=3000/tcp", then reload firewall with "firewall-cmd --reload"
+    4. Log on to workstation 1 and connet to nmon's server in the web (10.0.5.11:3000)
+    5. Enter the basic username and password (admin admin)
+    6. Change password **REMEMBER IT
+    7. Click the + icon on the left panel and select create a new dashboard and click "add new panel"
+    8. In the new dashboard, go to the query tab
+    9. Select -- Grafana --
+    10. Click the Save button
+    11. Add a very nice descriptive name and click save.
+    
+    12. Download influxdb using the command "wget https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3.arm64.rpm", then "sudo yum localinstall influxdb2-2.0.3.arm64.rpm"
+    13. Install telegraf with "wget https://dl.influxdata.com/telegraf/releases/telegraf-1.17.2-1.x86_64.rpm", them "sudo yum localinstall telegraf-1.17.2-1.x86_64.rpm"
+    14. Install mariadb-server using "sudo yum install mariadb-server"
+    15. Start the service with "systemctl start mariadb" and enable it, then type "mysql -u root"
+    16. Next, type "CREATE DATABASE grafana CHARACTER SET UTF8 COLLATE UTF8_BIN;"
+    17. "CREATE USER 'grafana'@'%' IDENTIFIED BY 'password';
+    18. "GRANT ALL PRIVILEGES ON grafana.* TO 'grafana'@'%';
+    19. "quit;"
+    20. Configure grafana repo with "vi /etc/grafana/grafana.ini"
+    21. Under the "Database" section, change the type to "mysql", the user to "grafana", and the password to "password"
+    22. Save and start the grafana service with "service grafana-server start"
+    23. Enable to start with "systemctl enable --now grafana-server"
+    
+    24. Enable influx with "systemctl enable --now influxdb"
+    25. Install snmp using "sudo yum install net-snmp"
+    26. edit snmpd.conf with "vi /etc/snmp/snmpd.conf"
+    27. Maybe change stuff? then go next
+    28. Enable telegraf "systemctl enable --now telegraf"
+    29. 
+
+
+
+
 2/4/21
 
 I. How to setup DHCP on PFSense
