@@ -1,3 +1,52 @@
+2/24/2021
+
+EC2 Notes.
+I. EC2 Notes
+  A. How to create a VM in EC2
+    1. Select AWS console to get to the console
+    2. Click "Launch a Virtual Machine"
+    3. Pick the "Red Hat Enterprise Linux 8 (HVM)" because IT IS FREE, LOOK FOR FREE ONES
+    4. Select 64 bit x86
+    5. Make sure the type is T2 micro (because it's free)
+    6. Click configure details
+    7. You can stick with all of the defaults on the next page
+    8. Click add storage in the bottom right, but you don't need to add any storage
+    9. Click "Review and Launch"
+    10. Click Launch
+    11. You will be prompted to either choose an existing key pair or make a new one
+    12. Create a new key pair called "SYS265-SP21" and make sure you download it as well and put it somewhere safe that you will remember.
+    13. Launch the instance (it will take a bit).
+    14. You can look up "Instances" in the box, and you can see that your box is running and you can see information about it (IP Address)
+    15. Now you can load a CMD to connect to your box via SSH
+    16. On the command prompt IN YOUR UBUNTU BOX, change the permissions of your key using the command "chmod 40 Desktop/SYS265-SP21.pem" (ubuntu on my personal desktop, jason
+        Username and normal password)
+    17. Use the command "ssh ec2-user@[ipaddress] -i [path to key]", in my case "ssh ec2-user@54.197.44.246 -i Desktop/SYS265-SP21.pem"
+      a. ssh'ing with the ec2-user at the certain IP and using the input file SYS265-SP21.pem
+    18. Now you should be in the system.
+  B. How to update the EC2 instance
+    1. Type in "sudo yum -y update" and it will update.
+  C. How to install python3
+    1. "sudo yum install -y python3.8
+    2. Use "python3.8" instead of "python3" when inputting commands
+  D. How to start a python http server
+    1. Create a new directory using the command "mkdir test-firewall"
+    2. Enter the directory with "cd test-firewall"
+    3. Use the command "echo "Testing EC2 Firewall" > index.html
+    4. Start the http server using "python3.8 -m http.server 9000"
+    5. In the AWS website, go into the EC2 instance and go to the "Security" tab and open up the security groups
+    6. Edit the inbound rules and add a new rule with port 9000 with source "0.0.0.0/0" (meaning all ips) with description "testing firewall" and save rules.
+  E. Create a Windows Server "Microsoft Windows Server 2019" (it should be free) and configure it similarly to above, however when you get to step 6 (security groups),
+     select use an existing and pick launch-wizard 1.
+    1. Add an inbound rule with type "RDP" and the port should switch to 3389, also add everyone as a source and give it the description "RDP Inbound".
+    2. To get into the box, you need to know the administrator password. To do this, you will need access to the key file.
+    3. On the AWS menu in "Instances", select the windows box and in the top right select where it says "Actions" and select "Security", then "Get windows password".
+    4. Select the key pair and then hit decrypt password. Write down this password somewhere.
+    5. You now have the password, so you can connect using RDP (mstsc on windows REMOTE DESKTOP).
+      a. You can find the IP address to connect on the Window's Server's Instance. Then, when asked for a username and password, select more options and put in "Administrator"
+        and the password that you wrote down.
+
+
+
 Grafana Notes
 
 I. How to install
