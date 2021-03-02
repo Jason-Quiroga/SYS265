@@ -1,3 +1,48 @@
+3/1/2021
+
+I. Ubuntu
+  A. How to set a static IP address on an Ubuntu Server
+    1. Figure out the name of the interface that you want to configure. Use the command "ip link" to see the interfaces (mine was ens160)
+    2. Navigate to your /etc/netplan directory, and you'll see a file called "00-installer-config.yaml". Sudo vi into this "sudo vi ./00-installer-config.yaml"
+      a. If you don't sudo vi it, you won't be able to save any changes you make since it's a read only file.
+    3. Change the file to look like this:
+     network:
+       ethernets:
+         ens160: //This is the name of whatever the interface you have
+           dhcp: no
+           addresses:
+                   - 10.0.5.12/24
+           gateway4: 10.0.5.2
+           nameservers:
+                   addresses: [10.0.5.5]
+       version: 2
+       renderer: networkd
+      
+      4. Save the file
+      5. Then, type "sudo netplan apply". If you have any errors, the program will tell you where they are.
+      6. Check that your changes are active by typing "ip addr" and see if your ens160 has changed IP addresses. You should now be able to ping inside and outside the network
+      7. Link to guide: https://linuxize.com/post/how-to-configure-static-ip-address-on-ubuntu-20-04/
+    B. Changing the hostname on Ubuntu
+      1. To view the current hostname, type "hostnamectl"
+      2. To change, type "hostnamectl set-hostname [name]", in my case the name is "docker01-jason"
+      3. Verify that the name changed by reusing the "hostnamectl" command.
+      4. You will also want to sudo vi into "/etc/hosts" and change the second host (presumably "ubuntu") to your new host name and save.
+      5. Also, sudo vi into "/etc/cloud/cloud.cfg" and search for "preserve_hostname" and set that to true.
+        a. The cloud also automatically disables root SSH, which is a nice feature for us.
+      6. Source: https://linuxize.com/post/how-to-change-hostname-on-ubuntu-18-04/
+    C. Make sure to add PTR and AAA records to the AD.
+    D. Adding a sudo user to Ubuntu
+      1. In ubuntu and in root, use the command "sudo adduser jason"
+      2. Fill in the necessary information
+      4. To make the user a sudo user, use the command "usermod -aG sudo jason"
+    E. Installing Docker
+      1. Refer to this guide: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
+    D. Installing Docker-Compose
+      1. Refer to this guide: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+
+
+
+
 2/24/2021
 
 EC2 Notes.
