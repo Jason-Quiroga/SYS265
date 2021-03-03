@@ -5,6 +5,7 @@ DOCKER - PROJECT WIKI
 I. Installing Rocket.Chat
   A. Installation:
     1. Website that I used to help me download it: https://docs.rocket.chat/installation/docker-containers/docker-compose
+      a. LINK TO MY CONFIGURATION FILE THAT I USED: https://github.com/Jason-Quiroga/SYS265/blob/main/Docker-Project%20Rocket.Chat
     2. Log on to docker01 (through an SSH so you can copy paste; use mgmt01)
     3. Go to the home directory if you're not already there
     4. Create a new directory called whatever you want (mkdir ./rocketchat). This is where we will store the YAML file that we need to run
