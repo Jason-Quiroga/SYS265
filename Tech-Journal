@@ -37,8 +37,33 @@ I. Ubuntu
       4. To make the user a sudo user, use the command "usermod -aG sudo jason"
     E. Installing Docker
       1. Refer to this guide: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04
-    D. Installing Docker-Compose
+    F. Installing Docker-Compose
       1. Refer to this guide: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04
+    G. Command syntax
+      1. "-p" is used to publish a specific port on the container to a specific port on the host system
+        a. Ex: "docker run -p 10.0.5.12:80:8080/tcp ubuntu bash"
+        b. This command will bind the container's port "8080" to tcp port 80 on 10.0.5.12 on the host's machine.
+        c. Note that ports which are not bound to the host (i.e., -p 80:80 instead of -p 127.0.0.1:80:80) will be accessible from the outside.
+      2. "docker images" is used to see what images you have installed.
+      3. "docker ps" Is used to list images and see status, uptime, commands, and what ports it's connected to
+      4. The following command will pull down the image, application and dependencies associated with a simple python web application: 
+         "docker run -d -P training/webapp python app.py"
+         a. You can see what port this is running on by typing "docker ps", and it will say "training/webapp" and under the ports section, it will say "0.0.0.0:(PORT)"
+         b. The "0.0.0.0" means that any ip trying to access it through the respective port will be able to access it. They would connect by using the host ip and this port
+            (after allowing the port through the firewall, of course).
+    H. Ubuntu Firewall
+      1. To enable a port to run through firewall, use the command "sudo ufw allow from any to any port (PORT) proto tcp"
+      2. Turn the firewall on with "sudo ufw enable" (or, if it's up, use "sudo ufw reload") I DON'T THINK YOU NEED TO RELOAD IT
+      3. Check to see if your port is allowed through with "sudo ufw status"
+      4. ALSO: to enable ssh through the firewall, you type "sudo ufw allow ssh".
+        a. IF YOU WANT SSH TO ACTUALLY WORK, USE PUTTY. NORMAL SSH SEEMS TO NOT WORK VERY WELL.
+    I. When you're trying to connect to a webserver container, use the syntax "http://docker01-jason:49153" where 49153 is the port
+      1. You may have to restart the container if it does not work at first (or just start in in general) with "docker start (NAME)" where name is whatever comes after the
+         port number of your container when you type "docker ps" (mine was "admiring_proskuriakova").
+      2. Similarly, to stop, you can use the command "docker stop (NAME)".
+    J. Creating wordpress using docker-compose
+      1. Tutorial: https://docs.docker.com/compose/wordpress/
+      
 
 
 
