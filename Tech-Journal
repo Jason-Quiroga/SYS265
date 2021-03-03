@@ -1,3 +1,33 @@
+3/3/2021
+
+DOCKER - PROJECT WIKI
+
+I. Installing Rocket.Chat
+  A. Installation:
+    1. Website that I used to help me download it: https://docs.rocket.chat/installation/docker-containers/docker-compose
+    2. Log on to docker01 (through an SSH so you can copy paste; use mgmt01)
+    3. Go to the home directory if you're not already there
+    4. Create a new directory called whatever you want (mkdir ./rocketchat). This is where we will store the YAML file that we need to run
+    5. Enter the directory (cd ./rocketchat)
+    6. When inside the directory, pull the .YAML file from the github page to add to your directory using the command:
+      a. curl -L https://raw.githubusercontent.com/RocketChat/Rocket.Chat/develop/docker-compose.yml -o stack.yaml
+      b. This will pull the file from the provided link and output it into the new file called "stack.yaml".
+    7. Open the file using your prefered text editor (mine is vi)
+    8. Look and make sure the ROOT_URL matches your URL (or localhost), as well as making sure that "image:" is set to "rocketchat/rocket.chat:latest".
+    9. Save and close the file after making the necessary edits.
+    10. Allow port 3000 through the firewall (sudo ufw allow 3000/tcp)
+    11. You can now start the stack with "docker-compose -f -d stack.yaml up". The -d will make it run detatched, allowing you to use docker01 freely while this runs.
+    12. Allow a few minutes for the program to download, extract, and start everything.
+    13. Log onto the website on a system in your domain (I used mgmt01) by using the address: "http://docker01-jason:3000".
+    14. This will bring you to the setup page for Rocket.Chat.
+    15. Fill in the necessary information to create an admin account and server information.
+    16. Once finished, it should bring you to a login page where you can use your username (my email is what worked for me) and password to log on to the service.
+    17. Once in, you can navigate to the chat and type freely to your peers!
+    18. To stop the service, you can use the command "docker-compose stop stack.yaml" (If stack.yaml doesn't work, try "rocketchat" instead).
+
+
+
+
 3/1/2021
 
 I. Ubuntu
