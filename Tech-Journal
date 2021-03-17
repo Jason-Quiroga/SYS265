@@ -1,3 +1,46 @@
+3/17/2021
+
+Ansible & Controller
+
+I. Controller Setup
+  A. Controller is an Ubuntu server, so use the notes below on Ubuntu to help set up your server.
+    1. To make the nameserver actually run, I had to sudo vi into "/etc/resolv.conf" and change where it says "nameserver" to "10.0.5.5".
+II. Ansible
+  A. How to install
+    1. On Controller, use the command "sudo apt install ansible sshpass python3-paramiko"
+    2. On all linux systems (controller, ansible 1 and 2), use this command to create a file "vi /etc/sudoers.d/sys265", and add the following:
+      a. "deployer      ALL=(ALL)     NOPASSWD: ALL
+  B. Requiring no password to log in to a user on a different system, instead using keys
+    0. Set the time that your keys will last for with the command "ssh-add -t 14400"
+    1. Start by creating a new private and public key on your controller "ssh-keygen -t rsa -C "sys265""
+    2. Set to the default location, and enter the passphrase twice (I did "passphrase").
+    3. Now, use this command to send your public key to the specified server "ssh-copy-id -i ~/.ssh/id_rsa.pub deployer@ansible1-jason.jason.local",
+       replacing "deployer" with the user you want to be allowed to SSH and "ansible1-jason.jason.local" with the hostname.
+    4. Enter the user's password that you are trying to allow
+    5. You should now be able to SSH into that system and that user by just using the passphrase you created.
+  C. Getting started
+    1. Return to your home directory and create two new directories using this command: "mkdir -p ansible/roles"
+    2. cd into ansible
+    3. Create a new document called "inventory.txt" and inside of it add the hostnames (ansible1-jason.jason.local and the other one), each on separate lines and save.
+    4. Now, you can use ansible to run commands from the hosts in your inventory.txt file.
+  D. Commands
+    1. "ansible all -m ping -i inventory.txt" --> Runs a ping command on all hosts in the inventory.txt file, responding with PONG.
+    2. "ansible all -a [COMMAND] -i inventory.txt" --> Runs the specified command on all hosts in the inventory.txt file, returning the command output
+    3. "ansible [GROUPNAME] [COMMAND] -i inventory.txt" --> Runs the specified command on only the hosts in the defined group.
+      a. To define this group, simply add "[GROUPNAME]" above the hosts that you want in the group. For example, I have "ansible2-jason.jason.local" in the group "[webmin]"
+  E. Ansible Galaxy and Semuadmin
+    1. Similar to dockerhub, contains a rich set of ansible scripts.
+    2. We installed semuadmin.webmin, a server administration tool, with "ansible-galaxy install semuadmin.webmin -p roles/". The semuadmin directory is now in
+       the roles directory.
+    3. We're now going to create a rulebook called "webmin.yml" to create a simple script. DON'T USE TABS, USE TWO SPACES.
+    4. Execute the playbook with "ansible-playbook -i inventory.txt roles/webmin.yml" and wait for it to finish, it will take a bit
+    5. It says that it opens port 10000, but I found I had to do it myself on ansible2-jason.
+    6. After opening the port, navigate to "https://ansible2-jason.jason.local:10000"
+    7. Enter the root username and password
+    8. You should now be in the interface viewing anbsible2's information
+
+
+
 3/8/2021
 
 Git & Linux SSH Script
