@@ -1,3 +1,47 @@
+3/23/2021
+CentOS 8
+
+I. CentOS8
+  A. To connect to ansible2 (Our CentOS 8 server)
+    1. From mgmt01: "ssh deployer@ansible2-jason.jason.local", then enter password
+  B. Nmcli
+    1. Command: "nmcli"
+    2. Used to controll NetworkManager
+    3. When used on it's own (just nmcli), shows network info
+  C. Changing IP address using nmcli
+    1. Use the command "sudo nmcli connection modify ens192 IPv4.address 10.0.5.234"
+    2. Then "nmcli connection down ens192 && sudo nmcli connection up ens192"
+      a. This will disrupt SSH, so make sure you change the DNS record for it and then try SSHing again.
+  D. Cockpit
+    1. Linux server management via web interface
+  E. Installing Cockpit
+    1. "dnf install cockpit -y"
+    2. "systemctl start cockpit.socket" and "systemctl enable cockpit.socket" to enable at boot.
+    3. "firewall-cmd --permanent --add-service=cockpit" and then reload with "firewall-cmd --reload"
+    4. Now, connect to the website on the internet using port 9090
+    5. Login using your useraccount
+  F. How to add Ansible2 to your AD Domain
+    1. "dnf install realmd sssd oddjob oddjob-mkhomedir adcli samba-common samba-common-tools krb5-workstation authselect-compat"
+    2. To join the domain, use "realm join jason.local -U jason.quiroga-adm" then enter the password
+      a. You need to make sure you have a domain admin account created. Do this by going into the AD DS on mgmt01 and right clicking and going to AD Users and Computers
+         and adding a new account in the Domain Administrators role.
+    3. To verify that it worked, type "realm list" and it should list jason.local
+    4. Then, "authselect select sssd" and "authselect select sssd with-mkhomedir
+    5. Restart the service: "systemctl restart sssd"
+    6. The command "id deployer" should now work and give you the groups that the user "deployer" is now in, or "id jason.quiroga-adm@jason.local"
+    7. Now, to add a domain user to be able to ssh into the ansible 2 box, type "realm permit jason.quiroga-adm@jason.local".
+    8. To allow a user access to sudo perms, create the sudo config file: "vi /etc/sudoers.d/domain_admins".
+    9. While editing the file, to add a single user use "jason.quiroga-adm@jason.local  ALL=(ALL) ALL" then save.
+      a. To add all domain admins, use "&Domain_Admins@jason.local  ALL=(ALL) ALL".
+    10. You should now be able to login to ansible2 using jason.quiroga-adm@jason.local.
+  G. To add Ansible1 to be monitored by Ansible2
+    1. On ansible2, install "cockpit_dashboard" with "dnf install cockpit-dashboard -y", then reload cockpit with "systemctl restart cockpit.socket"
+    2. Now, on ansible2's cockpit, you will see the dashboard tab. Click on the dashboard.
+    3. In the dashboard, click the plus on the right and fill in the information for Ansible1 (deployer user, IP of 10.0.5.91, etc.)
+    4. You should now see Ansible1 being monitored. If you click in the Host tab, you can now select between ansbile1 and ansible2.
+
+
+
 3/17/2021
 
 Ansible & Controller
