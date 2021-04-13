@@ -1,3 +1,13 @@
+4/13/2021
+
+I. Joining CentOS to a domain
+  A. Instructions
+    1. sudo yum install realmd samba samba-common oddjob oddjob-mkhomedir sssd
+    2. realm join --user=your-domain-admin-username@yourdomain.local yourdomain.local
+    3. realm list
+    4. You can now logout and login to the system as a domain user. (user@domain.local)
+
+
 3/23/2021
 CentOS 8
 
