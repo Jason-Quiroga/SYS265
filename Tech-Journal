@@ -1,3 +1,34 @@
+4/14/2021
+
+I. SSH Installation on Windows
+  A. Powershell
+    1. Invoke powershell
+    2. Use the command "Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0"
+    3. Wait for that to finish installing
+    4. Enable with "Start-Service sshd"
+    5. Enable on boot with "Set-Service -Name sshd -StartupType 'Automatic'"
+    6. You can now SSH into the system that you installed SSH on by using the syntax "ssh user-name-on-remote-sys@ip-address-of-remote-sys"
+II. Organization Units (OU)
+  A. How to create them using Powershell
+    1. Use the command syntax "New-ADOrganizationalUnit -Name "NAME HERE""
+    2. If you wanted to put the OU in a specific place inside of the domain, use the syntax "New-ADOrganizationalUnit -Name "NAME HERE" -path "OU=OUNAME,DC=DOMAINNAME,DC=local"
+  B. Moving a Computer to an OU
+    1. Use the command "Get-ADComputer "NAME OF COMPUTER" |Move-ADObject -TargetPath "OU=UNIT_TO_MOVE_TO,DC=DOMAIN_NAME,DC=local" -Verbose"
+    2. The computer should be moved now
+  C. Moving a User into an OU
+    1. Use the command "Get-ADUser username |Move-ADObject -TargetPath "OU=UNIT_TO_MOVE_TO,DC=DOMAIN_NAME,DC=local" -Verbose"
+    2. User should be moved
+  D. Deleting an OU
+    1. Use the command "Remove-ADOrganizationalUnit -Identity "OU=UNIT_TO_DELETE,DC=DOMAIN_NAME,DC=local""
+    2. Should now be deleted
+III. Event Viewer
+  A. Powershell Commands
+    1. Get-Eventlog -List --> Lists the event log
+    2. Get-Eventlog -LogName System -InstanceID 123 --> Lists the specific ID
+
+
+
+
 4/13/2021
 
 I. Joining CentOS to a domain
